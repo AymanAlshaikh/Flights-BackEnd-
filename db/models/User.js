@@ -1,4 +1,4 @@
-const sequelize = require("sequelize");
+const SequelizeSlugify = require("sequelize-slugify");
 
 const Users = (sequelize, DataType) => {
   const User = sequelize.define(
@@ -37,6 +37,9 @@ const Users = (sequelize, DataType) => {
     },
     { timestamps: false }
   );
+  SequelizeSlugify.slugifyModel(User, {
+    source: ["username"],
+  });
   return User;
 };
 module.exports = Users;
