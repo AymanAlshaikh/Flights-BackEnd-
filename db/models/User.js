@@ -10,7 +10,7 @@ const Users = (sequelize, DataType) => {
         allowNull: false,
       },
       password: {
-        type: DataType.INTEGER,
+        type: DataType.STRING,
         allowNull: false,
       },
       email: {
@@ -30,6 +30,9 @@ const Users = (sequelize, DataType) => {
       phonenumber: {
         type: DataType.INTEGER,
         allowNull: false,
+      },
+      type: {
+        type: DataType.BOOLEAN,
       },
     },
     { timestamps: false }
