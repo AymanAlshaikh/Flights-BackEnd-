@@ -1,8 +1,16 @@
 const express = require("express");
+const cors = require("cors");
+const passport = require("passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 const app = express();
 
+//Middleware
+app.use(express.json());
+app.use(cors());
 app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 //Error handler
 app.use((req, res, next) => {
@@ -18,7 +26,19 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = 8000;
-// db.sequelize.sync({ alter: true });
-app.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`);
-});
+
+//Sync DB and listen to port
+const run = async () => {
+  try {
+    await db.sequelize.sync({ alter: true });
+    console.log("Connection to the database successful!");
+  } catch (error) {
+    console.error("Error connecting to the database: ", error);
+  }
+
+  await app.listen(PORT, () => {
+    console.log(`The application is running on localhost:${PORT}`);
+  });
+};
+
+run();
