@@ -23,3 +23,18 @@ exports.signup = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.signin = async (req, res, next) => {
+  try {
+    const { user } = req;
+    const payload = {
+      id: user.id,
+      username: user.username,
+      exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
+    };
+    const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
+    res.json({ token });
+  } catch (error) {
+    next(error);
+  }
+};
