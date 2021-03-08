@@ -49,7 +49,7 @@ exports.signup = async (req, res, next) => {
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
 
     res.status(201);
-    res.json(token);
+    res.json({ token });
   } catch (error) {
     next(error);
   }
