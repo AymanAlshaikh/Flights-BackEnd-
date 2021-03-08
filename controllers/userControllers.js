@@ -2,8 +2,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../db/models/");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
+const { validationResult } = require("express-validator");
 
 exports.updateUser = async (req, res, next) => {
+  //Hnadle if the the username and email are used already
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  //if the username and email ar not used before
   const { userId } = req.params;
   const { password } = req.body;
 
@@ -26,6 +34,13 @@ exports.updateUser = async (req, res, next) => {
 };
 
 exports.signup = async (req, res, next) => {
+  //Hnadle if the the username and email are used already
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  //if the username and email ar not used before
   const { password } = req.body;
   try {
     const hashedPassowrd = await bcrypt.hash(password, 10);
