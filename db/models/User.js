@@ -12,6 +12,9 @@ const Users = (sequelize, DataType) => {
       password: {
         type: DataType.STRING,
         allowNull: false,
+        // validate: {
+        //   len: [8, 12],
+        // },
       },
       email: {
         type: DataType.STRING,
@@ -19,20 +22,24 @@ const Users = (sequelize, DataType) => {
         allowNull: false,
         validate: { isEmail: true },
       },
-      firstname: {
+      firstName: {
         type: DataType.STRING,
         allowNull: false,
       },
-      lastname: {
+      lastName: {
         type: DataType.STRING,
         allowNull: false,
       },
-      phonenumber: {
-        type: DataType.INTEGER,
+      phoneNumber: {
+        type: DataType.STRING,
         allowNull: false,
+        validate: {
+          len: [8, 10],
+        },
       },
       isAirline: {
         type: DataType.BOOLEAN,
+        defaultValue: false,
       },
     },
     { timestamps: false }
