@@ -3,11 +3,27 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../db/models/");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
-// exports.userData = async (req, res) => {
-//   const { userId } = req.params;
-//   const users = User.find((user) => user.id === userId);
-//   res.json(users);
-// };
+exports.updateUser = async (req, res, next) => {
+  const { userId } = req.params;
+  const { password } = req.body;
+
+  try {
+    const foundUser = await User.findByPk(userId);
+
+    if (foundUser) {
+      console.log(req.body);
+      const hashedPassowrd = await bcrypt.hash(password, 10);
+      req.body.password = hashedPassowrd;
+      await foundUser.update(req.body);
+
+      res.status(204).json(req.body);
+    } else {
+      res.status(404).json("user does not exist");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.signup = async (req, res, next) => {
   const { password } = req.body;

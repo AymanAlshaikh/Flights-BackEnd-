@@ -31,15 +31,15 @@ const Users = (sequelize, DataType) => {
         type: DataType.INTEGER,
         allowNull: false,
       },
-      type: {
+      isAirline: {
         type: DataType.BOOLEAN,
       },
     },
     { timestamps: false }
   );
-  SequelizeSlugify.slugifyModel(User, {
-    source: ["username"],
-  });
+  // SequelizeSlugify.slugifyModel(User, {
+  //   source: ["username"],
+  // });
   return User;
 };
 module.exports = Users;

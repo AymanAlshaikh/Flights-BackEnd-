@@ -3,11 +3,14 @@ const passport = require("passport");
 const Router = express.Router();
 
 // const { signup, UserList, signin } = require(""); //DON'T FOR GET TO IMPORT THE CONTROLLERS
-const { signup, signin, userData } = require("../controllers/userControllers");
+const {
+  signup,
+  signin,
+  updateUser,
+} = require("../controllers/userControllers");
 
 //User Detail router
-// Router.get("/:userId", userData);
-
+Router.put("/user/:userId", updateUser);
 //User sign up
 Router.post("/signup", signup);
 //User sign in
