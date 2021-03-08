@@ -1,5 +1,3 @@
-const SequelizeSlugify = require("sequelize-slugify");
-
 const Users = (sequelize, DataType) => {
   const User = sequelize.define(
     "User",
@@ -12,9 +10,9 @@ const Users = (sequelize, DataType) => {
       password: {
         type: DataType.STRING,
         allowNull: false,
-        // validate: {
-        //   len: [8, 12],
-        // },
+        validate: {
+          len: [8, 12],
+        },
       },
       email: {
         type: DataType.STRING,
@@ -44,9 +42,6 @@ const Users = (sequelize, DataType) => {
     },
     { timestamps: false }
   );
-  // SequelizeSlugify.slugifyModel(User, {
-  //   source: ["username"],
-  // });
   return User;
 };
 module.exports = Users;
