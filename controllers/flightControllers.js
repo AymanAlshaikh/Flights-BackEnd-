@@ -1,4 +1,4 @@
-const { Flight } = require("../db/models");
+const { Flight, User } = require("../db/models");
 
 exports.flightList = async (req, res, next) => {
   try {

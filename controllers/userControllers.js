@@ -44,8 +44,8 @@ exports.signup = async (req, res, next) => {
   try {
     const hashedPassowrd = await bcrypt.hash(password, 10);
     req.body.password = hashedPassowrd;
+    // if (User.isAirline) {
     const newUser = await User.create(req.body);
-
     const payload = {
       id: newUser.id,
       username: newUser.username,
@@ -54,6 +54,7 @@ exports.signup = async (req, res, next) => {
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
 
     res.status(201).json({ token });
+    // } else res.json("U R not an airline");
   } catch (error) {
     next(error);
   }
