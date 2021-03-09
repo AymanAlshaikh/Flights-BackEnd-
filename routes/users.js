@@ -23,7 +23,7 @@ const {
 
 //User Detail router
 Router.put(
-  "/user/:userId",
+  "/profile",
   // body("username").custom(async (value) => {
   //   try {
   //     console.log(req.user);

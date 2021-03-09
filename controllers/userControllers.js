@@ -12,15 +12,12 @@ exports.updateUser = async (req, res, next) => {
   }
 
   //if the username and email ar not used before
-  const { userId } = req.params;
-  const { password } = req.body;
-
+  const userId = req.body.id;
+  console.log(userId);
   try {
     const foundUser = await User.findByPk(userId);
 
     if (foundUser) {
-      const hashedPassowrd = await bcrypt.hash(password, 10);
-      req.body.password = hashedPassowrd;
       await foundUser.update(req.body);
 
       res.status(204).json(req.body);
@@ -45,12 +42,16 @@ exports.signup = async (req, res, next) => {
     const hashedPassowrd = await bcrypt.hash(password, 10);
     req.body.password = hashedPassowrd;
     const newUser = await User.create(req.body);
-
     const payload = {
       id: newUser.id,
       username: newUser.username,
+      email: newUser.email,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      phoneNumber: newUser.phoneNumber,
       exp: Date.now() + JWT_EXPIRATION_MS,
     };
+    console.log(payload);
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
 
     res.status(201).json({ token });
@@ -65,6 +66,11 @@ exports.signin = async (req, res, next) => {
     const payload = {
       id: user.id,
       username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber,
+      isAirline: user.isAirline,
       exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
