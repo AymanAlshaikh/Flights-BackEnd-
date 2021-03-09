@@ -2,6 +2,8 @@ const Flights = (sequelize, DataType) => {
   const Flight = sequelize.define(
     "Flight",
     {
+      economySeats: { type: DataType.INTEGER },
+      businessSeats: { type: DataType.INTEGER },
       Airline: { type: DataType.STRING },
       price: { type: DataType.FLOAT },
       departureDate: {
