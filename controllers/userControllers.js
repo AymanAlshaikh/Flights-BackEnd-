@@ -19,7 +19,6 @@ exports.updateUser = async (req, res, next) => {
     const foundUser = await User.findByPk(userId);
 
     if (foundUser) {
-      console.log(req.body);
       const hashedPassowrd = await bcrypt.hash(password, 10);
       req.body.password = hashedPassowrd;
       await foundUser.update(req.body);
