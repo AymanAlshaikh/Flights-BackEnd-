@@ -1,8 +1,27 @@
 const { Flight } = require("../db/models");
+const { Op } = require("sequelize");
 
 exports.flightList = async (req, res, next) => {
   try {
+    // Adding 2 hours to the current time
+    const add_minutes = function (dt, minutes) {
+      return new Date(dt.getTime() + minutes * 60000);
+    };
+    const timeNow = add_minutes(new Date(), 120).toLocaleTimeString("en-GB");
+
+    const dateNow = Date.now();
+    const today = new Date(dateNow);
+    //Listing today's all Flights that are two hours ahead
     const flights = await Flight.findAll({
+      where: {
+        departureDate: {
+          [Op.or]: {
+            [Op.eq]: today,
+            [Op.gt]: today,
+          },
+        },
+        departureTime: { [Op.gt]: timeNow },
+      },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.status(200).json(flights);
