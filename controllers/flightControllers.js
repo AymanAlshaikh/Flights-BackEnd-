@@ -1,8 +1,16 @@
-const { Flight } = require("../db/models");
+const { Flight, User } = require("../db/models");
 
+// const time =
+//   User.departureTime.getHours() * 360000 +
+//   User.departureTime.getMinutes() * 60000 +
+//   User.departureTime.getSeconds() * 1000;
 exports.flightList = async (req, res, next) => {
   try {
+    const timeNow = Date.now() + 7200000;
     const flights = await Flight.findAll({
+      where: {
+        departureTime: this.departureTime > timeNow,
+      },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.status(200).json(flights);

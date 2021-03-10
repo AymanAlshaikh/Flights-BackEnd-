@@ -13,7 +13,6 @@ exports.updateUser = async (req, res, next) => {
 
   //if the username and email ar not used before
   const userId = req.body.id;
-  console.log(userId);
   try {
     const foundUser = await User.findByPk(userId);
 
