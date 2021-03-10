@@ -1,4 +1,4 @@
 module.exports = {
   JWT_SECRET: "secretkey",
-  JWT_EXPIRATION_MS: 900000,
+  JWT_EXPIRATION_MS: 90000000000000,
 };

@@ -3,6 +3,7 @@ const { Flight, User } = require("../db/models");
 exports.flightList = async (req, res, next) => {
   try {
     const flights = await Flight.findAll({
+      // where: { departureTime: this.departureTime > Date.now() + 7200000 },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.status(200).json(flights);
