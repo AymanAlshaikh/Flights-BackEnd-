@@ -1,4 +1,6 @@
 const { Flight, User } = require("../db/models");
+const { Op } = require("sequelize");
+const moment = require("moment");
 
 // const time =
 //   User.departureTime.getHours() * 360000 +
@@ -6,13 +8,15 @@ const { Flight, User } = require("../db/models");
 //   User.departureTime.getSeconds() * 1000;
 exports.flightList = async (req, res, next) => {
   try {
-    const timeNow = Date.now() + 7200000;
+    const timeNow = new Date().toLocaleTimeString("en-GB");
     const flights = await Flight.findAll({
       where: {
-        departureTime: this.departureTime > timeNow,
+        departureTime: { [Op.gt]: timeNow },
+        // departureDate: {[Op.gt]: }
       },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
+    console.log(timeNow);
     res.status(200).json(flights);
   } catch (error) {
     next(error);
