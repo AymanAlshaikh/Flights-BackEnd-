@@ -41,20 +41,23 @@ exports.signup = async (req, res, next) => {
   try {
     const hashedPassowrd = await bcrypt.hash(password, 10);
     req.body.password = hashedPassowrd;
+    // if (User.isAirline) {
     const newUser = await User.create(req.body);
     const payload = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      phoneNumber: newUser.phoneNumber,
-      exp: Date.now() + JWT_EXPIRATION_MS,
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber,
+      isAirline: user.isAirline,
+      exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
     };
     console.log(payload);
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
 
     res.status(201).json({ token });
+    // } else res.json("U R not an airline");
   } catch (error) {
     next(error);
   }

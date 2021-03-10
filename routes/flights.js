@@ -1,23 +1,35 @@
 const express = require("express");
-const Router = express.Router();
-// REVIEW: Better naming: router not Router
+const router = express.Router();
+// REVIEW: Better naming: router not router (done)
 const {
   flightList,
   flightCreate,
-  removeFlight,
-  updateFlight,
+  flightRemove,
+  flightUpdate,
+  flightFetch,
 } = require("../controllers/flightControllers");
 
+//flight fetch
+router.param("flightId", async (req, res, next, flightId) => {
+  const flight = await flightFetch(flightId, next);
+  if (flight) {
+    req.flight = flight;
+    next();
+  } else {
+    next({ status: 404, message: "flight not found" });
+  }
+});
+
 //flight list
-Router.get("/", flightList);
+router.get("/", flightList);
 
 //flight add
-Router.post("/", flightCreate);
+router.post("/", flightCreate);
 
 //flight delete
-Router.delete("/:flightId", removeFlight);
+router.delete("/:flightId", flightRemove);
 
 //flight update
-Router.put("/:flightId", updateFlight);
+router.put("/:flightId", flightUpdate);
 
-module.exports = Router;
+module.exports = router;

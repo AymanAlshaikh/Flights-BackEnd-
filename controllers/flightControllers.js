@@ -1,5 +1,7 @@
-const { Flight } = require("../db/models");
+
+const { Flight, User } = require("../db/models");
 const { Op } = require("sequelize");
+
 
 exports.flightList = async (req, res, next) => {
   try {
@@ -13,6 +15,9 @@ exports.flightList = async (req, res, next) => {
     const today = new Date(dateNow);
     //Listing today's all Flights that are two hours ahead
     const flights = await Flight.findAll({
+
+      // where: { departureTime: this.departureTime > Date.now() + 7200000 },
+
       where: {
         departureDate: {
           [Op.or]: {
@@ -39,34 +44,30 @@ exports.flightCreate = async (req, res, next) => {
   }
 };
 
-// REVIEW: Better naming: flightRemove, flightUpdate
-// REVIEW: Use router.params to find the flight
+// REVIEW: Better naming: flightRemove, flightUpdate (done)
+// REVIEW: Use router.params to find the flight (done)
 
-exports.removeFlight = async (req, res, next) => {
-  const { flightId } = req.params;
+exports.flightFetch = async (flightId, next) => {
   try {
-    const found = await Flight.findByPk(flightId);
-    if (found) {
-      found.destroy();
-      res.status(204).end();
-    } else {
-      res.json("flight does not exist"); // Add 404 status
-    }
+    return (found = await Flight.findByPk(flightId));
   } catch (error) {
     next(error);
   }
 };
 
-exports.updateFlight = async (req, res, next) => {
-  const { flightId } = req.params;
+exports.flightRemove = async (req, res, next) => {
   try {
-    const found = await Flight.findByPk(flightId);
-    if (found) {
-      found.update(req.body);
-      res.status(204).json(req.body);
-    } else {
-      res.json("flight does not exist");
-    }
+    req.flight.destroy();
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.flightUpdate = async (req, res, next) => {
+  try {
+    req.flight.update(req.body);
+    res.status(204).json(req.body);
   } catch (error) {
     next(error);
   }
