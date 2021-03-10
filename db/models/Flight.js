@@ -29,9 +29,6 @@ const Flights = (sequelize, DataType) => {
       },
       departureTime: { type: DataType.DATE },
       arrivalTime: { type: DataType.DATE },
-
-      departureTime: { type: DataType.TIME },
-      arrivalTime: { type: DataType.TIME },
       departureAirport: { type: DataType.STRING },
       arrivalAirport: { type: DataType.STRING },
     },
