@@ -10,6 +10,7 @@ exports.updateUser = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+  // REVIEW: You should get the user ID from the token, ma y9eer you pass it bil body!
 
   //if the username and email ar not used before
   const userId = req.body.id;
@@ -65,6 +66,7 @@ exports.signup = async (req, res, next) => {
 exports.signin = async (req, res, next) => {
   try {
     const { user } = req;
+    // REVIEW: The token here is different than the signup token. Why?
     const payload = {
       id: user.id,
       username: user.username,

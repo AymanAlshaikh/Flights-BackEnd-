@@ -9,6 +9,8 @@ const {
   updateUser,
 } = require("../controllers/userControllers");
 
+// REVIEW: Remove commented out code
+
 // Router.param("userId", async (req, res, next, userId) => {
 //   const foundUser = await fetchUser(userId, next);
 //   if (foundUser) {
