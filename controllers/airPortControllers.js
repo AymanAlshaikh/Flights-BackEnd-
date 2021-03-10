@@ -1,5 +1,6 @@
 const { AirPort } = require("../db/models");
 
+// REVIEW: Better naming: airportList, airportCreate
 exports.AirportList = async (req, res, next) => {
   try {
     const airPorts = await AirPort.findAll({

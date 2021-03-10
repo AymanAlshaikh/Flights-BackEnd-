@@ -20,6 +20,9 @@ exports.flightCreate = async (req, res, next) => {
   }
 };
 
+// REVIEW: Better naming: flightRemove, flightUpdate
+// REVIEW: Use router.params to find the flight
+
 exports.removeFlight = async (req, res, next) => {
   const { flightId } = req.params;
   try {
@@ -28,7 +31,7 @@ exports.removeFlight = async (req, res, next) => {
       found.destroy();
       res.status(204).end();
     } else {
-      res.json("flight does not exist");
+      res.json("flight does not exist"); // Add 404 status
     }
   } catch (error) {
     next(error);

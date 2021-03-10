@@ -9,3 +9,5 @@ module.exports = (sequelize, DataTypes) => {
   });
   return AirPort;
 };
+
+// REVIEW: Airport is one word, it should be Airport not AirPort :p
