@@ -44,13 +44,13 @@ exports.signup = async (req, res, next) => {
     // if (User.isAirline) {
     const newUser = await User.create(req.body);
     const payload = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phoneNumber: user.phoneNumber,
-      isAirline: user.isAirline,
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      phoneNumber: newUser.phoneNumber,
+      isAirline: newUser.isAirline,
       exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
     };
     console.log(payload);
