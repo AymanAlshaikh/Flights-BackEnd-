@@ -1,13 +1,13 @@
 const express = require("express");
-const Router = express.Router();
+const router = express.Router();
 
 const {
   AirportList,
-  AirPortCreate,
+  AirportCreate,
 } = require("../controllers/airPortControllers");
-//AirPort list
-Router.get("/", AirportList);
-//AirPort add
-Router.post("/add", AirPortCreate);
+//Airport list
+router.get("/", AirportList);
+//Airport add
+router.post("/add", AirportCreate);
 
-module.exports = Router;
+module.exports = router;

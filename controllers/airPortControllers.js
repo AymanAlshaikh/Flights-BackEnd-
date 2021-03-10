@@ -1,9 +1,9 @@
-const { AirPort } = require("../db/models");
+const { Airport } = require("../db/models");
 
 // REVIEW: Better naming: airportList, airportCreate
 exports.AirportList = async (req, res, next) => {
   try {
-    const airPorts = await AirPort.findAll({
+    const airPorts = await Airport.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.status(200).json(airPorts);
@@ -12,10 +12,10 @@ exports.AirportList = async (req, res, next) => {
   }
 };
 
-exports.AirPortCreate = async (req, res, next) => {
+exports.AirportCreate = async (req, res, next) => {
   try {
-    const newAirPort = await AirPort.create(req.body);
-    res.status(201).json(newAirPort);
+    const newAirport = await Airport.create(req.body);
+    res.status(201).json(newAirport);
   } catch (error) {
     next(error);
   }
