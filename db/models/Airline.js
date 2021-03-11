@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Airport = sequelize.define(
-    "Airport",
+  const Airline = sequelize.define(
+    "Airline",
     {
       name: {
         type: DataTypes.STRING,
@@ -11,5 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     },
     { timestamps: false }
   );
-  return Airport;
+  return Airline;
 };

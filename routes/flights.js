@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// REVIEW: Better naming: router not router (done)
+
 const {
   flightList,
   flightCreate,

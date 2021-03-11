@@ -4,11 +4,9 @@ const Flights = (sequelize, DataType) => {
     {
       economySeats: { type: DataType.INTEGER },
       businessSeats: { type: DataType.INTEGER },
-      Airline: { type: DataType.STRING }, // REVIEW: what's this?
       price: { type: DataType.FLOAT },
       departureDate: {
         type: DataType.DATEONLY,
-        // allowNull: false,
         validate: {
           DateValidate(value) {
             if (this.arrivalDate < value) {
