@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "mohamedhamdan",
-    "password": null,
+    "username": "postgres",
+    "password": "654321",
     "database": "flights_db",
     "host": "127.0.0.1",
     "dialect": "postgres",
