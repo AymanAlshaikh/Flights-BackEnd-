@@ -2,7 +2,7 @@ const { Airline } = require("../db/models");
 
 exports.airlineList = async (req, res, next) => {
   try {
-    const airlines = await Airline.findAll({});
+    const airlines = await Airline.findAll();
     res.status(200).json(airlines);
   } catch (error) {
     next(error);
