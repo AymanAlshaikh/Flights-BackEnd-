@@ -40,7 +40,22 @@ exports.flightList = async (req, res, next) => {
 exports.flightCreate = async (req, res, next) => {
   try {
     const newFlight = await Flight.create(req.body);
-    res.status(201).json(newFlight);
+
+    const items = () => ({
+      economySeats: newFlight.economySeats,
+      businessSeats: newFlight.businessSeats,
+      price: newFlight.price,
+      departureDate: newFlight.departureDate,
+      arrivalDate: newFlight.arrivalDate,
+      departureTime: newFlight.departureTime,
+      arrivalTime: newFlight.arrivalTime,
+      departureAirportId: newFlight.arrivalAirportId,
+      arrivalAirportId: newFlight.departureAirportId,
+      airlineId: newFlight.airlineId,
+    });
+    const roundtrip = await Flight.create(items(newFlight));
+    // res.status(201).json(newFlight);
+    res.status(201).json(roundtrip);
   } catch (error) {
     next(error);
   }
