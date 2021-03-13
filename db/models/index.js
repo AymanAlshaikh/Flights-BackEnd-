@@ -46,8 +46,17 @@ db.Sequelize = Sequelize;
 db.User.belongsTo(db.Tier, { as: "tier" });
 db.Tier.hasMany(db.User, { as: "users", foreignKey: "tierId" });
 
-db.Airport.hasMany(db.Flight, { as: "flights", foreignKey: "airportId" });
-db.Flight.belongsTo(db.Airport, { as: "airport" });
+db.Flight.belongsTo(db.Airport, { foreignKey: "departureAirportId" });
+db.Flight.belongsTo(db.Airport, { foreignKey: "arrivalAirportId" });
+
+db.Airport.hasMany(db.Flight, {
+  as: "departureFlights",
+  foreignKey: "departureAirportId",
+});
+db.Airport.hasMany(db.Flight, {
+  as: "arrivalFlights",
+  foreignKey: "arrivalAirportId",
+});
 
 db.Airline.hasMany(db.Flight, { as: "flights", foreignKey: "airlineId" });
 db.Flight.belongsTo(db.Airline, { as: "airline" });
