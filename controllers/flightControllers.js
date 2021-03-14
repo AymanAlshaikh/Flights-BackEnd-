@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Flight } = require("../db/models");
+const moment = require("moment");
 
 exports.flightFetch = async (flightId, next) => {
   try {
@@ -12,7 +13,7 @@ exports.flightFetch = async (flightId, next) => {
 exports.flightList = async (req, res, next) => {
   try {
     // Adding 2 hours to the current time
-    const add_minutes = function (dt, minutes) {
+    const add_minutes = (dt, minutes) => {
       return new Date(dt.getTime() + minutes * 60000);
     };
     const timeNow = add_minutes(new Date(), 120).toLocaleTimeString("en-GB");
@@ -53,14 +54,44 @@ exports.flightList = async (req, res, next) => {
 exports.flightCreate = async (req, res, next) => {
   try {
     const newFlight = await Flight.create(req.body);
+
+    // Add half an hour to the flight
+    const arrivalDate = newFlight.arrivalDate;
+    const arrivalTime = newFlight.arrivalTime;
+    const fullarrivalDate = moment(arrivalDate + " " + arrivalTime).format();
+    const addedHalf = moment(fullarrivalDate).add(0.5, "hours").format();
+
+    // start time and end time
+    const startTime = moment(newFlight.departureTime, "HH:mm:ss");
+    const endTime = moment(arrivalTime, "HH:mm:ss");
+
+    // calculate total duration
+    const duration = moment.duration(endTime.diff(startTime));
+
+    // duration in hours
+    const hours = parseInt(duration.asHours());
+
+    // duration in minutes
+    const minutes = parseInt(duration.asMinutes()) % 60;
+
+    // add duration
+    const addHours = moment(addedHalf).add(hours, "hours").format();
+    const addMinutes = moment(addHours).add(minutes, "minutes").format();
+
+    // new Dates
+    const newFlightDepartureDate = moment(addedHalf).format("YYYY-MM-DD");
+    const newFlightDepartureTime = moment(addedHalf).format("HH:mm");
+    const newFlightArrivalDate = moment(addMinutes).format("YYYY-MM-DD");
+    const newFlightArrivalTime = moment(addMinutes).format("HH:mm");
+
     const items = {
       economySeats: newFlight.economySeats,
       businessSeats: newFlight.businessSeats,
       price: newFlight.price,
-      departureDate: newFlight.departureDate,
-      arrivalDate: newFlight.arrivalDate,
-      departureTime: newFlight.departureTime,
-      arrivalTime: newFlight.arrivalTime,
+      departureDate: newFlightDepartureDate,
+      departureTime: newFlightDepartureTime,
+      arrivalDate: newFlightArrivalDate,
+      arrivalTime: newFlightArrivalTime,
       departureAirportId: newFlight.arrivalAirportId,
       arrivalAirportId: newFlight.departureAirportId,
       airlineId: newFlight.airlineId,

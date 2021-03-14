@@ -8,6 +8,6 @@ const {
 
 router.get("/", airlineList);
 // Remove airline Create after completing testing
-router.post("/add", airlineCreate);
+router.post("/", airlineCreate);
 
 module.exports = router;
