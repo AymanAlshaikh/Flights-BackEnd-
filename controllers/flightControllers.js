@@ -22,13 +22,26 @@ exports.flightList = async (req, res, next) => {
     //Listing today's all Flights that are two hours ahead
     const flights = await Flight.findAll({
       where: {
-        departureDate: {
-          [Op.or]: {
-            [Op.eq]: today,
-            [Op.gt]: today,
+        // This was so confusing, don't try this at home
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {
+                departureTime: {
+                  [Op.gt]: timeNow,
+                },
+                departureDate: {
+                  [Op.eq]: today,
+                },
+              },
+            ],
           },
-        },
-        departureTime: { [Op.gt]: timeNow },
+          {
+            departureDate: {
+              [Op.gt]: today,
+            },
+          },
+        ],
       },
     });
     res.status(200).json(flights);
@@ -40,7 +53,6 @@ exports.flightList = async (req, res, next) => {
 exports.flightCreate = async (req, res, next) => {
   try {
     const newFlight = await Flight.create(req.body);
-
     const items = {
       economySeats: newFlight.economySeats,
       businessSeats: newFlight.businessSeats,
