@@ -6,7 +6,7 @@ const { User } = require("../db/models/");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
 exports.signup = async (req, res, next) => {
-  //Hnadle if the the username and email are used already
+  //Handle if the the username and email are used already
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -17,7 +17,6 @@ exports.signup = async (req, res, next) => {
   try {
     const hashedPassowrd = await bcrypt.hash(password, 10);
     req.body.password = hashedPassowrd;
-    // if (User.isAirline) {
     const newUser = await User.create(req.body);
     const payload = {
       id: newUser.id,
@@ -30,14 +29,14 @@ exports.signup = async (req, res, next) => {
       exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
-
     res.status(201).json({ token });
-    // } else res.json("U R not an airline");
   } catch (error) {
     next(error);
   }
 };
 
+// Create function that that takes the user object and creates token
+// Removes duplicate code
 exports.signin = async (req, res, next) => {
   try {
     const { user } = req;
@@ -59,7 +58,7 @@ exports.signin = async (req, res, next) => {
 };
 
 exports.updateUser = async (req, res, next) => {
-  //Hnadle if the the username and email are used already
+  //Handle if the the username and email are used already
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

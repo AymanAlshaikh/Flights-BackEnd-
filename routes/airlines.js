@@ -6,10 +6,8 @@ const {
   airlineCreate,
 } = require("../controllers/airlineControllers");
 
-//Airline list
 router.get("/", airlineList);
-
-//Airline add
+// Remove airline Create after completing testing
 router.post("/add", airlineCreate);
 
 module.exports = router;
