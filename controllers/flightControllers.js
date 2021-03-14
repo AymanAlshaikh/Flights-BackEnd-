@@ -55,15 +55,24 @@ exports.flightCreate = async (req, res, next) => {
   try {
     const newFlight = await Flight.create(req.body);
 
-    // Add half an hour to the flight
+    // arrival details
     const arrivalDate = newFlight.arrivalDate;
     const arrivalTime = newFlight.arrivalTime;
     const fullarrivalDate = moment(arrivalDate + " " + arrivalTime).format();
+
+    // departure details
+    const departureDate = newFlight.departureDate;
+    const departureTime = newFlight.departureTime;
+    const fulldepartureDate = moment(
+      departureDate + " " + departureTime
+    ).format();
+
+    // Add half an hour to the flight
     const addedHalf = moment(fullarrivalDate).add(0.5, "hours").format();
 
     // start time and end time
-    const startTime = moment(newFlight.departureTime, "HH:mm:ss");
-    const endTime = moment(arrivalTime, "HH:mm:ss");
+    const startTime = moment(fulldepartureDate);
+    const endTime = moment(fullarrivalDate);
 
     // calculate total duration
     const duration = moment.duration(endTime.diff(startTime));
