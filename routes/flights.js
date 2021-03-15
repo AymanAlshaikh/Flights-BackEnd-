@@ -1,5 +1,7 @@
 const express = require("express");
+
 const passport = require("passport");
+
 const router = express.Router();
 
 const {
@@ -10,6 +12,8 @@ const {
   flightFetch,
   flightSearch,
 } = require("../controllers/flightControllers");
+
+
 
 //flight fetch
 router.param("flightId", async (req, res, next, flightId) => {
@@ -28,17 +32,9 @@ router.get("/", flightList);
 //flight list
 router.get("/search", flightSearch);
 
-//flight add
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  flightCreate
-);
 
 //flight delete
 router.delete("/:flightId", flightRemove);
 
-//flight update
-router.put("/:flightId", flightUpdate);
 
 module.exports = router;
