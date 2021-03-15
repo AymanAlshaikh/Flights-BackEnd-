@@ -6,10 +6,7 @@ const {
   airportCreate,
 } = require("../controllers/airportControllers");
 
-//Airport list
 router.get("/", airportList);
-
-//Airport add
 router.post("/add", airportCreate);
 
 module.exports = router;
