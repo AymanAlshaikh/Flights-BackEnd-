@@ -1,7 +1,5 @@
-const { Op, QueryTypes } = require("sequelize");
+const { Op } = require("sequelize");
 const { Flight } = require("../db/models");
-const moment = require("moment");
-const sequelize = require("sequelize");
 
 exports.flightFetch = async (flightId, next) => {
   try {
@@ -52,9 +50,11 @@ exports.flightList = async (req, res, next) => {
   }
 };
 
-
-
 exports.flightSearch = async (req, res, next) => {
+  console.log(
+    "🚀 ~ file: flightControllers.js ~ line 56 ~ exports.flightSearch= ~ req.body",
+    req.body
+  );
   try {
     // Adding 2 hours to the current time
     const add_minutes = (dt, minutes) => {
@@ -65,12 +65,6 @@ exports.flightSearch = async (req, res, next) => {
     const dateNow = Date.now();
     const today = new Date(dateNow);
     //Listing today's all Flights that are two hours ahead
-    const seat = req.body.seat;
-    if (seat === "Economy") {
-      ("Economy");
-    } else {
-      ("Business");
-    }
     const flights = await Flight.findAll({
       where: {
         [Op.and]: [
@@ -123,8 +117,6 @@ exports.flightSearch = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 exports.flightRemove = async (req, res, next) => {
   try {

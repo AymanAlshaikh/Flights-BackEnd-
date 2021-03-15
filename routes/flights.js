@@ -13,8 +13,6 @@ const {
   flightSearch,
 } = require("../controllers/flightControllers");
 
-
-
 //flight fetch
 router.param("flightId", async (req, res, next, flightId) => {
   const flight = await flightFetch(flightId, next);
@@ -30,11 +28,9 @@ router.param("flightId", async (req, res, next, flightId) => {
 router.get("/", flightList);
 
 //flight list
-router.get("/search", flightSearch);
-
+router.post("/search", flightSearch);
 
 //flight delete
 router.delete("/:flightId", flightRemove);
-
 
 module.exports = router;
