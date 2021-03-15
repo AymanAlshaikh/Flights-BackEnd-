@@ -1,6 +1,7 @@
-const { Op } = require("sequelize");
+const { Op, QueryTypes } = require("sequelize");
 const { Flight } = require("../db/models");
 const moment = require("moment");
+const sequelize = require("sequelize");
 
 exports.flightFetch = async (flightId, next) => {
   try {
@@ -51,75 +52,79 @@ exports.flightList = async (req, res, next) => {
   }
 };
 
-// exports.flightCreate = async (req, res, next) => {
-//   try {
-//     const newFlight = await Flight.create(req.body);
 
-//     // arrival details
-//     const arrivalDate = newFlight.arrivalDate;
-//     const arrivalTime = newFlight.arrivalTime;
-//     const fullarrivalDate = moment(arrivalDate + " " + arrivalTime).format();
 
-//     // departure details
-//     const departureDate = newFlight.departureDate;
-//     const departureTime = newFlight.departureTime;
-//     const fulldepartureDate = moment(
-//       departureDate + " " + departureTime
-//     ).format();
+exports.flightSearch = async (req, res, next) => {
+  try {
+    // Adding 2 hours to the current time
+    const add_minutes = (dt, minutes) => {
+      return new Date(dt.getTime() + minutes * 60000);
+    };
+    const timeNow = add_minutes(new Date(), 120).toLocaleTimeString("en-GB");
 
-//     // Add half an hour to the flight
-//     const addedHalf = moment(fullarrivalDate).add(0.5, "hours").format();
+    const dateNow = Date.now();
+    const today = new Date(dateNow);
+    //Listing today's all Flights that are two hours ahead
+    const seat = req.body.seat;
+    if (seat === "Economy") {
+      ("Economy");
+    } else {
+      ("Business");
+    }
+    const flights = await Flight.findAll({
+      where: {
+        [Op.and]: [
+          {
+            departureDate: {
+              [Op.or]: [
+                { [Op.eq]: req.body.departureDate },
+                { [Op.gt]: req.body.departureDate },
+              ],
+            },
+          },
 
-//     // start time and end time
-//     const startTime = moment(fulldepartureDate);
-//     const endTime = moment(fullarrivalDate);
+          {
+            departureAirportId: {
+              [Op.eq]: req.body.departureAirportId,
+            },
+          },
+          {
+            arrivalAirportId: {
+              [Op.eq]: req.body.arrivalAirportId,
+            },
+          },
 
-//     // calculate total duration
-//     const duration = moment.duration(endTime.diff(startTime));
+          {
+            [Op.or]: [
+              {
+                economySeats: {
+                  [Op.or]: [
+                    { [Op.eq]: req.body.economySeats },
+                    { [Op.gt]: req.body.economySeats },
+                  ],
+                },
+              },
 
-//     // duration in hours
-//     const hours = parseInt(duration.asHours());
+              {
+                businessSeats: {
+                  [Op.or]: [
+                    { [Op.eq]: req.body.businessSeats },
+                    { [Op.gt]: req.body.businessSeats },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    });
+    res.status(200).json(flights);
+  } catch (error) {
+    next(error);
+  }
+};
 
-//     // duration in minutes
-//     const minutes = parseInt(duration.asMinutes()) % 60;
 
-//     // add duration
-//     const addHours = moment(addedHalf).add(hours, "hours").format();
-//     const addMinutes = moment(addHours).add(minutes, "minutes").format();
-
-//     // new Dates
-//     const newFlightDepartureDate = moment(addedHalf).format("YYYY-MM-DD");
-//     const newFlightDepartureTime = moment(addedHalf).format("HH:mm");
-//     const newFlightArrivalDate = moment(addMinutes).format("YYYY-MM-DD");
-//     const newFlightArrivalTime = moment(addMinutes).format("HH:mm");
-
-//     const items = {
-//       economySeats: newFlight.economySeats,
-//       businessSeats: newFlight.businessSeats,
-//       price: newFlight.price,
-//       departureDate: newFlightDepartureDate,
-//       departureTime: newFlightDepartureTime,
-//       arrivalDate: newFlightArrivalDate,
-//       arrivalTime: newFlightArrivalTime,
-//       departureAirportId: newFlight.arrivalAirportId,
-//       arrivalAirportId: newFlight.departureAirportId,
-//       airlineId: newFlight.airlineId,
-//     };
-//     const roundtrip = await Flight.create(items);
-//     res.status(201).json(roundtrip);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// exports.flightUpdate = async (req, res, next) => {
-//   try {
-//     req.flight.update(req.body);
-//     res.status(204).json(req.body);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 exports.flightRemove = async (req, res, next) => {
   try {
