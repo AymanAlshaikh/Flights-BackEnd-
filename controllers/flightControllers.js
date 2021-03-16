@@ -11,6 +11,7 @@ exports.flightFetch = async (flightId, next) => {
 
 exports.flightList = async (req, res, next) => {
   try {
+    // Review: move adding 2 hours to a function
     // Adding 2 hours to the current time
     const add_minutes = (dt, minutes) => {
       return new Date(dt.getTime() + minutes * 60000);
@@ -51,11 +52,8 @@ exports.flightList = async (req, res, next) => {
 };
 
 exports.flightSearch = async (req, res, next) => {
-  console.log(
-    "🚀 ~ file: flightControllers.js ~ line 56 ~ exports.flightSearch= ~ req.body",
-    req.body
-  );
   try {
+    // Review: move adding 2 hours to a function
     // Adding 2 hours to the current time
     const add_minutes = (dt, minutes) => {
       return new Date(dt.getTime() + minutes * 60000);
@@ -63,6 +61,8 @@ exports.flightSearch = async (req, res, next) => {
     const timeNow = add_minutes(new Date(), 120).toLocaleTimeString("en-GB");
 
     const dateNow = Date.now();
+
+    // Review: remove today if not used
     const today = new Date(dateNow);
     //Listing today's all Flights that are two hours ahead
     const flights = await Flight.findAll({

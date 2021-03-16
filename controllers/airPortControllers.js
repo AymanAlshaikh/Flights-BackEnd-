@@ -9,7 +9,7 @@ exports.airportList = async (req, res, next) => {
   }
 };
 
-// Remove after completing testing
+//Review: remove after finishing
 exports.airportCreate = async (req, res, next) => {
   try {
     const newAirport = await Airport.create(req.body);

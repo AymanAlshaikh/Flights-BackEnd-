@@ -34,13 +34,9 @@ router.param("airlineId", async (req, res, next, airlineId) => {
   }
 });
 
-
-
-
 router.get("/", airlineList);
-// Remove airline Create after completing testing
+// Review: Remove airline Create after completing testing
 router.post("/", airlineCreate);
-
 
 router.post(
   "/:airlineId/flights",

@@ -35,8 +35,8 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-// Create function that that takes the user object and creates token
-// Removes duplicate code
+// Review: Create function that that takes the user object and creates token
+// Review: Removes duplicate code
 exports.signin = async (req, res, next) => {
   try {
     const { user } = req;

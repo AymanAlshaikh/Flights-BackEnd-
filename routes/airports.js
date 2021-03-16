@@ -7,6 +7,7 @@ const {
 } = require("../controllers/airportControllers");
 
 router.get("/", airportList);
+// Review: Remove airport Create after completing testing
 router.post("/add", airportCreate);
 
 module.exports = router;

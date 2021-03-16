@@ -18,6 +18,7 @@ exports.airlineList = async (req, res, next) => {
   }
 };
 
+// Review: Remove airline Create after completing testing
 exports.airlineCreate = async (req, res, next) => {
   try {
     const newAirline = await Airline.create(req.body);
@@ -28,10 +29,12 @@ exports.airlineCreate = async (req, res, next) => {
 };
 
 exports.flightCreate = async (req, res, next) => {
+  // Review: Add trycatch if needed
   // try {
   if (req.user.id === req.airline.userId) {
     const newFlight = await Flight.create(req.body);
 
+    // Review: move all the moment process to a function
     // arrival details
     const arrivalDate = newFlight.arrivalDate;
     const arrivalTime = newFlight.arrivalTime;
@@ -95,6 +98,7 @@ exports.flightCreate = async (req, res, next) => {
 };
 
 exports.flightUpdate = async (req, res, next) => {
+  // Review: add trycatch if needed
   // try {
   if (req.user.id === req.airline.userId) {
     req.flight.update(req.body);

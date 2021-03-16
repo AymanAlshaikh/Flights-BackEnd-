@@ -43,6 +43,7 @@ Router.post(
   signup
 );
 
+// Review: add validation and passport
 Router.put("/profile", updateUser);
 
 module.exports = Router;
