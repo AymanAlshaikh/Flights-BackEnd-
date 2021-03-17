@@ -64,13 +64,22 @@ db.Flight.belongsTo(db.Airline, { as: "airline" });
 db.User.hasOne(db.Airline, { as: "airline", foreignKey: "userId" });
 db.Airline.belongsTo(db.User, { as: "user" });
 
-db.User.belongsToMany(db.Flight, {
-  through: db.Booking,
-  foreignKey: "userId",
+//علاقة بين البوكنق والفلايت ماني تو ماني
+db.Booking.belongsToMany(db.Flight, {
+  through: db.FlightBooking,
+  foreignKey: "bookingId",
 });
-db.Flight.belongsToMany(db.User, {
-  through: db.Booking,
+db.Flight.belongsToMany(db.Booking, {
+  through: db.FlightBooking,
   foreignKey: "flightId",
 });
+
+//new relationships by Ayman and Ismail
+db.Booking.hasMany(db.Passenger, { as: "passengers", foreignKey: "bookingId" });
+db.Passenger.belongsTo(db.Booking, { as: "booking" });
+
+//booking relation with user
+db.User.hasMany(db.Booking, { as: "bookings", foreignKey: "userId" });
+db.Booking.belongsTo(db.User, { as: "users", foreignKey: "userId" });
 
 module.exports = db;
