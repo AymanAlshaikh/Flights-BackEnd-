@@ -101,7 +101,7 @@ exports.flightUpdate = async (req, res, next) => {
   // Review: add trycatch if needed
   // try {
   if (req.user.id === req.airline.userId) {
-    req.flight.update(req.body);
+    await req.flight.update(req.body);
     res.status(204).json(req.body);
   } else {
     const error = new Error("not your flight");

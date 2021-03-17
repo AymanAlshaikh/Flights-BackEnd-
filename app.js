@@ -10,6 +10,7 @@ const flightRoutes = require("./routes/flights");
 const airportRoutes = require("./routes/airports");
 const airlineRoutes = require("./routes/airlines");
 const tierRoutes = require("./routes/tiers");
+const bookingRoutes = require("./routes/bookings");
 
 const app = express();
 const PORT = 8000;
@@ -22,6 +23,7 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 // Routes
+app.use(bookingRoutes);
 app.use(userRoutes);
 app.use("/flights", flightRoutes);
 app.use("/airports", airportRoutes);
