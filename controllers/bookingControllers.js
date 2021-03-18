@@ -1,4 +1,10 @@
-const { Airline, Flight, Booking, Passenger } = require("../db/models");
+const {
+  Airline,
+  Flight,
+  Booking,
+  Passenger,
+  FlightBooking,
+} = require("../db/models");
 const moment = require("moment");
 
 exports.bookingFetch = async (bookingId, next) => {
@@ -11,13 +17,19 @@ exports.bookingFetch = async (bookingId, next) => {
 
 exports.bookingCreate = async (req, res, next) => {
   try {
+    console.log(req.body);
     const newBooking = await Booking.create({ userId: req.body.userId });
 
     const passengers = req.body.passengers.map((passenger) => ({
       ...passenger,
       bookingId: newBooking.id,
     }));
+
     const rokaab = await Passenger.bulkCreate(passengers);
+    const hajz = await FlightBooking.create({
+      bookingId: newBooking.id,
+      flightId: req.body.flightId,
+    });
     res.status(201).json(rokaab);
   } catch (error) {
     next(error);

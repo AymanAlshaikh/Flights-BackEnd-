@@ -71,8 +71,19 @@ exports.updateUser = async (req, res, next) => {
     const foundUser = await User.findByPk(userId);
 
     if (foundUser) {
-      await foundUser.update(req.body);
-
+      const updatedUser = await foundUser.update(req.body);
+      // const payload = {
+      //   id: updatedUser.id,
+      //   username: updatedUser.username,
+      //   email: updatedUser.email,
+      //   firstName: updatedUser.firstName,
+      //   lastName: updatedUser.lastName,
+      //   phoneNumber: updatedUser.phoneNumber,
+      //   isAirline: updatedUser.isAirline,
+      //   exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
+      // };
+      // const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
+      // res.json({ token });
       res.status(204).json(req.body);
     } else {
       res.status(404).json("user does not exist");
